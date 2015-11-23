@@ -37,10 +37,10 @@ public class SampleApplicationTest {
 
     @Test
     public void test() throws Exception {
-        given().when().body(cborStringBody()).contentType("application/cbor").post("/notifications").then().statusCode(200);
+        given().when().body(sampleNotification()).contentType("application/cbor").post("/notifications").then().statusCode(200);
     }
 
-    private byte[] cborStringBody() throws Exception {
+    private byte[] sampleNotification() throws Exception {
         final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         final CBORFactory factory = new CBORFactory(new ObjectMapper());
         final CBORGenerator generator = factory.createGenerator(baos);
