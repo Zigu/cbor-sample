@@ -45,13 +45,17 @@ public class SampleApplicationTest {
         final CBORFactory factory = new CBORFactory(new ObjectMapper());
         final CBORGenerator generator = factory.createGenerator(baos);
 
-        generator.writeString("check12");
+        final Notification notification = new Notification();
+        notification.setId(1);
+        notification.setText("Check 12");
+
+        generator.writeObject(notification);
         generator.flush();
         generator.close();
 
         final byte[] bytes = baos.toByteArray();
 
-        System.out.println("Converted check12 to cbor. ("  + new String(bytes) + ")");
+        System.out.println("Converted " + notification + " to cbor. ("  + new String(bytes) + ")");
 
         return bytes;
     }

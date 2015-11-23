@@ -17,7 +17,7 @@ import java.util.List;
 public class SampleApplication extends WebMvcConfigurerAdapter {
 
     @RequestMapping(value = "/notifications", method = RequestMethod.POST, consumes = "application/cbor")
-    public void home(@RequestBody String value) {
+    public void receive(@RequestBody Notification value) {
         System.out.println("received " + value);
     }
 
