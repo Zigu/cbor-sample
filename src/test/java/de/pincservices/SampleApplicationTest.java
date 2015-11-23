@@ -1,12 +1,8 @@
 package de.pincservices;
 
-import co.nstant.in.cbor.CborBuilder;
-import co.nstant.in.cbor.CborEncoder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.cbor.CBORFactory;
-import com.fasterxml.jackson.dataformat.cbor.CBORGenerator;
 import com.jayway.restassured.RestAssured;
-import com.jayway.restassured.http.ContentType;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,8 +11,6 @@ import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-
-import java.io.ByteArrayOutputStream;
 
 import static com.jayway.restassured.RestAssured.given;
 
@@ -41,21 +35,16 @@ public class SampleApplicationTest {
     }
 
     private byte[] sampleNotification() throws Exception {
-        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        final CBORFactory factory = new CBORFactory(new ObjectMapper());
-        final CBORGenerator generator = factory.createGenerator(baos);
+
+        final ObjectMapper objectMapper = new ObjectMapper(new CBORFactory());
 
         final Notification notification = new Notification();
         notification.setId(1);
         notification.setText("Check 12");
 
-        generator.writeObject(notification);
-        generator.flush();
-        generator.close();
+        final byte[] bytes = objectMapper.writeValueAsBytes(notification);
 
-        final byte[] bytes = baos.toByteArray();
-
-        System.out.println("Converted " + notification + " to cbor. ("  + new String(bytes) + ")");
+        System.out.println("Converted " + notification + " to cbor. (" + new String(bytes) + ")");
 
         return bytes;
     }
